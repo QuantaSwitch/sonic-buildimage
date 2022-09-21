@@ -1,6 +1,10 @@
 {
     "chassis": {
         "name": "T7032-IX7",
+        "thermal_manager":false,
+        "status_led": {
+            "controllable": false
+        },
         "components": [
             {
                 "name": "BIOS"
@@ -35,106 +39,269 @@
         ],
         "fans": [
             {
-                "name": "Fantray1_1"
+                "name": "Fantray1_1",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
             },
             {
-                "name": "Fantray1_2"
+                "name": "Fantray1_2",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
             },
             {
-                "name": "Fantray2_1"
+                "name": "Fantray2_1",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
             },
             {
-                "name": "Fantray2_2"
+                "name": "Fantray2_2",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
+
             },
             {
-                "name": "Fantray3_1"
+                "name": "Fantray3_1",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
             },
             {
-                "name": "Fantray3_2"
+                "name": "Fantray3_2",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
             },
             {
-                "name": "Fantray4_1"
+                "name": "Fantray4_1",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
             },
             {
-                "name": "Fantray4_2"
+                "name": "Fantray4_2",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
             },
             {
-                "name": "Fantray5_1"
+                "name": "Fantray5_1",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
             },
             {
-                "name": "Fantray5_2"
+                "name": "Fantray5_2",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
             },
             {
-                "name": "Fantray6_1"
+                "name": "Fantray6_1",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
             },
             {
-                "name": "Fantray6_2"
+                "name": "Fantray6_2",
+                "speed": {
+                    "controllable": false
+                },
+                "status_led": {
+                    "available": false
+                }
             }
         ],
         "fan_drawers": [
             {
                 "name": "Fantray1",
+                "status_led": {
+                    "controllable": false
+                },
                 "fans": [
                     {
-                        "name": "Fantray1_1"
+                        "name": "Fantray1_1",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     },
                     {
-                        "name": "Fantray1_2"
+                        "name": "Fantray1_2",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     }
                 ]
             },
             {
                 "name": "Fantray2",
+                "status_led": {
+                    "controllable": false
+                },
                 "fans": [
                     {
-                        "name": "Fantray2_1"
+                        "name": "Fantray2_1",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     },
                     {
-                        "name": "Fantray2_2"
+                        "name": "Fantray2_2",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     }
                 ]
             },
             {
                 "name": "Fantray3",
+                "status_led": {
+                    "controllable": false
+                },
                 "fans": [
                     {
-                        "name": "Fantray3_1"
+                        "name": "Fantray3_1",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     },
                     {
-                        "name": "Fantray3_2"
+                        "name": "Fantray3_2",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     }
                 ]
             },
             {
                 "name": "Fantray4",
+                "status_led": {
+                    "controllable": false
+                },
                 "fans": [
                     {
-                        "name": "Fantray4_1"
+                        "name": "Fantray4_1",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     },
                     {
-                        "name": "Fantray4_2"
+                        "name": "Fantray4_2",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     }
                 ]
             },
             {
                 "name": "Fantray5",
+                "status_led": {
+                    "controllable": false
+                },
                 "fans": [
                     {
-                        "name": "Fantray5_1"
+                        "name": "Fantray5_1",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     },
                     {
-                        "name": "Fantray5_2"
+                        "name": "Fantray5_2",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     }
                 ]
             },
             {
                 "name": "Fantray6",
+                "status_led": {
+                    "controllable": false
+                },
                 "fans": [
                     {
-                        "name": "Fantray6_1"
+                        "name": "Fantray6_1",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     },
                     {
-                        "name": "Fantray6_2"
+                        "name": "Fantray6_2",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     }
                 ]
             }
@@ -142,66 +309,159 @@
         "psus": [
             {
                 "name": "PSU 1",
+                "status_led": {
+                    "controllable": false
+                },
                 "fans": [
                     {
-                        "name": "PSU-1_FAN"
+                        "name": "PSU-1_FAN",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     }
                 ]
             },
             {
                 "name": "PSU 2",
+                "status_led": {
+                    "controllable": false
+                },
                 "fans": [
                     {
-                        "name": "PSU-2_FAN"
+                        "name": "PSU-2_FAN",
+                        "speed": {
+                            "controllable": false
+                        },
+                        "status_led": {
+                            "available": false
+                        }
                     }
                 ]
             }
         ],
         "thermals": [
             {
-                "name": "PSU1_TEMP1"
+                "name": "PSU1_TEMP1",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "PSU1_TEMP2"
+                "name": "PSU1_TEMP2",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "PSU1_TEMP3"
+                "name": "PSU1_TEMP3",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "PSU2_TEMP1"
+                "name": "PSU2_TEMP1",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "PSU2_TEMP2"
+                "name": "PSU2_TEMP2",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "PSU2_TEMP3"
+                "name": "PSU2_TEMP3",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "Temp_Ambient_0"
+                "name": "Temp_Ambient_0",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "Temp_Ambient_1"
+                "name": "Temp_Ambient_1",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "Temp_Ambient_2"
+                "name": "Temp_Ambient_2",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "Temp_Ambient_3"
+                "name": "Temp_Ambient_3",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "Temp_Ambient_4"
+                "name": "Temp_Ambient_4",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "Temp_Ambient_5"
+                "name": "Temp_Ambient_5",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "Temp_Ambient_6"
+                "name": "Temp_Ambient_6",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "Temp_CPU"
+                "name": "Temp_CPU",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             },
             {
-                "name": "Temp_DIMM0"
+                "name": "Temp_DIMM0",
+                "controllable": false,
+                "low-threshold": false,
+                "low-crit-threshold": false,
+                "minimum-recorded": false,
+                "maximum-recorded": false
             }
         ],
         "sfps": [

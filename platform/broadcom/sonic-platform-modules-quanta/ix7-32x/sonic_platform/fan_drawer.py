@@ -45,3 +45,47 @@ class FanDrawer(FanDrawerBase):
             A boolean value, True if device is operating properly, False if not
         """
         return self._fan_list[0].get_status()
+
+    def get_position_in_parent(self):
+        """
+        Retrieves 1-based relative physical position in parent device.
+        Returns:
+            integer: The 1-based relative physical position in parent
+            device or -1 if cannot determine the position
+        """
+        return self._index
+
+    def is_replaceable(self):
+        """
+        Indicate whether this Fandrawer is replaceable.
+        Returns:
+            bool: True if it is replaceable.
+        """
+        return True
+
+    def set_status_led(self, color):
+        """
+        Set led to expected color
+        Args:
+            color: A string representing the color with which to set the
+                   fan module status LED
+        Returns:
+            bool: True if set success, False if fail.
+        """
+        # Leds are controlled by Smart-fussion FPGA.
+        # Return True to avoid thermalctld alarm.
+        return True
+
+    def get_status_led(self):
+        """
+        Gets the state of the Fan status LED
+        Returns:
+            A string, one of the predefined STATUS_LED_COLOR_* strings.
+        """
+        if self.get_presence():
+            if self.get_fan(0).get_status():
+                return self.STATUS_LED_COLOR_GREEN
+            else:
+                return self.STATUS_LED_COLOR_RED
+        else:
+            return self.STATUS_LED_COLOR_OFF

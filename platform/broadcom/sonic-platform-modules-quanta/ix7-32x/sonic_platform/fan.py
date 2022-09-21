@@ -48,6 +48,8 @@ class Fan(FanBase):
             self.fan_pwm_attr = "fan{}_pwm".format(FAN_INDEX_START+(index-1))
             self.fan_rpm_attr = "fan{}_input".format(FAN_INDEX_START+(index-1))
             self.fan_direction_attr = "fan{}_direction".format(FAN_INDEX_START+(index-1))
+            self.fantray_index = (self.fan_index-1)//FANS_PERTRAY+1
+            self.fan_index_intray = self.fan_index - ((self.fantray_index-1)*FANS_PERTRAY)
 
 
 #######################
@@ -84,9 +86,23 @@ class Fan(FanBase):
         if self.is_psu_fan:
             return "PSU-{}_FAN".format(self.fan_index)
         else:
-            fantray_index = (self.fan_index-1)//FANS_PERTRAY+1
-            fan_index_intray = self.fan_index - ((fantray_index-1)*FANS_PERTRAY)
-            return "Fantray{}_{}".format(fantray_index, fan_index_intray)
+            return "Fantray{}_{}".format(self.fantray_index, self.fan_index_intray)
+
+    def get_model(self):
+        """
+        Retrieves the part number of the FAN
+        Returns:
+            string: Part number of FAN
+        """
+        return 'NA'
+
+    def get_serial(self):
+        """
+        Retrieves the serial number of the FAN
+        Returns:
+            string: Serial number of FAN
+        """
+        return 'NA'
 
     def get_presence(self):
         """
@@ -123,6 +139,25 @@ class Fan(FanBase):
     #################
     # fan base
     #################
+    def get_position_in_parent(self):
+        """
+        Retrieves 1-based relative physical position in parent device.
+        Returns:
+            integer: The 1-based relative physical position in parent
+            device or -1 if cannot determine the position
+        """
+        if self.is_psu_fan:
+            return 1
+        else:
+            return self.fan_index_intray
+
+    def is_replaceable(self):
+        """
+        Indicate whether Fan is replaceable.
+        Returns:
+            bool: True if it is replaceable.
+        """
+        return False
 
     def get_direction(self):
         """
@@ -196,6 +231,18 @@ class Fan(FanBase):
                  considered tolerable
         """
         return 25
+
+    def set_speed(self, speed):
+        """
+        Set fan speed to expected value
+        Args:
+            speed: An integer, the percentage of full fan speed to set fan to,
+                   in the range 0 (off) to 100 (full speed)
+        Returns:
+            bool: True if set success, False if fail.
+        """
+        # Fan speeds are controlled by Smart-fussion FPGA.
+        return False
 
     def set_status_led(self, color):
         """
