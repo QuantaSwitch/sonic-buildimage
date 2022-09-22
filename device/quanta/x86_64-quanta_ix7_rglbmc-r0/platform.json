@@ -28,7 +28,7 @@
                 "name": "MB_CPLD_IO_2"
             },
             {
-                "name": "MB_CPLD_LED_2"
+                "name": "MB_CPLD_LED_1"
             },
             {
                 "name": "MB_CPLD_LED_2"
@@ -308,7 +308,7 @@
         ],
         "psus": [
             {
-                "name": "PSU 1",
+                "name": "PSU1",
                 "status_led": {
                     "controllable": false
                 },
@@ -325,7 +325,7 @@
                 ]
             },
             {
-                "name": "PSU 2",
+                "name": "PSU2",
                 "status_led": {
                     "controllable": false
                 },

@@ -38,6 +38,22 @@ class FanDrawer(FanDrawerBase):
         """
         return self._fan_list[0].get_presence()
 
+    def get_model(self):
+        """
+        Retrieves the part number of the component
+        Returns:
+            string: Part number of component
+        """
+        return 'N/A'
+
+    def get_serial(self):
+        """
+        Retrieves the serial number of the component
+        Returns:
+            string: Serial number of component
+        """
+        return 'N/A'
+
     def get_status(self):
         """
         Retrieves the operational status of the device
@@ -89,3 +105,12 @@ class FanDrawer(FanDrawerBase):
                 return self.STATUS_LED_COLOR_RED
         else:
             return self.STATUS_LED_COLOR_OFF
+
+    def get_maximum_consumed_power(self):
+        """
+        Retrives the maximum power drawn by Fan Drawer
+        Returns:
+            A float, with value of the maximum consumable power of the
+            component.
+        """
+        return 0.0

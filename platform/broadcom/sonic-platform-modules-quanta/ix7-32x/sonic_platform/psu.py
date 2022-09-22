@@ -46,20 +46,29 @@ class Psu(PsuBase):
             1:46,
             2:56,
         }
+        self.psu_temp_index_mapping = {
+            1:43,
+            2:53,
+        }
         self.index                = index
         self.psu_presence_attr    = "power{}_present".format(self.psu_index_mapping[self.index])
         self.psu_status_attr      = "curr{}_input".format(self.psu_currentout_index_mapping[self.index])
         self.psu_power_in_attr    = "power{}_input".format(self.psu_powerin_index_mapping[self.index])
         self.psu_power_out_attr   = "power{}_input".format(self.psu_index_mapping[self.index])
         self.psu_voltage_out_attr = "in{}_input".format(self.psu_voltageout_index_mapping[self.index])
+        self.psu_vout_high_th_attr= "in{}_ncrit".format(self.psu_voltageout_index_mapping[self.index])
+        self.psu_vout_low_th_attr = "in{}_lncrit".format(self.psu_voltageout_index_mapping[self.index])
         self.psu_current_out_attr = "curr{}_input".format(self.psu_currentout_index_mapping[self.index])
-        self.psu_voltage_in_attr = "in{}_input".format(self.psu_voltagein_index_mapping[self.index])
-        self.psu_current_in_attr = "curr{}_input".format(self.psu_currentin_index_mapping[self.index])
+        self.psu_voltage_in_attr  = "in{}_input".format(self.psu_voltagein_index_mapping[self.index])
+        self.psu_current_in_attr  = "curr{}_input".format(self.psu_currentin_index_mapping[self.index])
         self.psu_serial_attr      = "power{}_sn".format(self.psu_index_mapping[self.index])
         self.psu_model_attr       = "power{}_model".format(self.psu_index_mapping[self.index])
         self.psu_mfr_id_attr      = "power{}_mfrid".format(self.psu_index_mapping[self.index])
         self.psu_capacity_attr    = "power{}_pout_max".format(self.psu_index_mapping[self.index])
         self.psu_type_attr        = "power{}_vin_type".format(self.psu_index_mapping[self.index])
+        self.psu_revision_attr    = "power{}_hw_rev".format(self.psu_index_mapping[self.index])
+        self.psu_temp_attr        = "temp{}_input".format(self.psu_temp_index_mapping[self.index])
+        self.psu_temp_high_th_attr= "temp{}_ncrit".format(self.psu_temp_index_mapping[self.index])
 
     def __get_attr_value(self, attr_path):
 
@@ -154,6 +163,29 @@ class Psu(PsuBase):
 
         return serial
 
+    def get_revision(self):
+        """
+        Retrives thehardware revision of the device
+        Returns:
+            String: revision value of device
+        """
+        revision = "N/A"
+        attr_path = HWMON_DIR+self.psu_revision_attr
+
+        attr_rv = self.__get_attr_value(attr_path)
+        if (attr_rv != 'ERR'):
+            revision = attr_rv
+
+        return revision
+
+    def is_replaceable(self):
+        """
+        Indicate whether this PSU is replaceable.
+        Returns:
+            bool: True if it is replaceable.
+        """
+        return True
+
     def get_status(self):
         """
         Retrieves the operational status of the device
@@ -193,6 +225,34 @@ class Psu(PsuBase):
             voltage_out = float(attr_rv) / 1000
 
         return voltage_out
+
+    def get_voltage_low_threshold(self):
+        """
+        Returns PSU low threshold in Volts
+        """
+        vout_low_th = 0.0
+        attr_path = HWMON_DIR+self.psu_vout_low_th_attr
+
+        attr_rv = self.__get_attr_value(attr_path)
+        if (attr_rv != 'ERR'):
+            attr_rv, dummy = attr_rv.split('.', 1)
+            vout_low_th = float(attr_rv) / 1000
+
+        return vout_low_th
+
+    def get_voltage_high_threshold(self):
+        """
+        Returns PSU high threshold in Volts
+        """
+        vout_high_th = 0.0
+        attr_path = HWMON_DIR+self.psu_vout_high_th_attr
+
+        attr_rv = self.__get_attr_value(attr_path)
+        if (attr_rv != 'ERR'):
+            attr_rv, dummy = attr_rv.split('.', 1)
+            vout_high_th = float(attr_rv) / 1000
+
+        return vout_high_th
 
     def get_current(self):
         """
@@ -259,7 +319,7 @@ class Psu(PsuBase):
         attr_rv = self.__get_attr_value(attr_path)
         if (attr_rv != 'ERR'):
             attr_rv, dummy = attr_rv.split('.', 1)
-            power_out = float(attr_rv) / 1000
+            power_out = float(attr_rv) / 1000.0
 
         return power_out
 
@@ -300,21 +360,58 @@ class Psu(PsuBase):
 
         return type
 
-    def get_capacity(self):
+    def get_position_in_parent(self):
         """
-        Gets the capacity (maximum output power) of the PSU in watts
-
+        Retrieves 1-based relative physical position in parent device.
         Returns:
-            An integer, the capacity of PSU
+            integer: The 1-based relative physical position in parent
+            device or -1 if cannot determine the position
         """
-        capacity = 0
+        return self.index
+
+    def get_maximum_supplied_power(self):
+        """
+        Retrieves the maximum supplied power by PSU
+        Returns:
+            A float number, the maximum power output in Watts.
+            e.g. 1200.1
+        """
+        capacity = 0.0
         attr_path = HWMON_DIR+self.psu_capacity_attr
         attr_rv = self.__get_attr_value(attr_path)
         if (attr_rv != 'ERR'):
             try:
-                capacity = int(attr_rv)
+                capacity = float(attr_rv)
             except ValueError:
-                capacity = 0
+                capacity = 0.0
 
         return capacity
 
+    def get_temperature(self):
+        """
+        Retrieves current temperature reading from PSU
+        Returns:
+            A float number of current temperature in Celsius up to nearest thousandth
+            of one degree Celsius, e.g. 30.125
+        """
+
+        tout = 0.0
+        attr_path = HWMON_DIR+self.psu_temp_attr
+        attr_rv = self.__get_attr_value(attr_path)
+        if (attr_rv != 'ERR'):
+            tout = float(attr_rv)/1000.0
+
+        # tout is in milli degree celcius
+        return tout
+
+    def get_temperature_high_threshold(self):
+        """
+        Returns the high temperature threshold for PSU in Celsius
+        """
+        attr_path = HWMON_DIR+self.psu_temp_high_th_attr
+        attr_rv = self.__get_attr_value(attr_path)
+
+        if (attr_rv != 'ERR'):
+            return float(attr_rv) / 1000
+        else:
+            return None

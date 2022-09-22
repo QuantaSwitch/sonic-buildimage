@@ -28,7 +28,7 @@
 #define __TO_R_EXP(bacc)  (int32_t)(tos32(((BSWAP_32(bacc) & 0xf0) >> 4), 4))
 #define __TO_B_EXP(bacc)  (int32_t)(tos32((BSWAP_32(bacc) & 0xf), 4))
 
-#define SENSOR_ATTR_MAX         19
+#define SENSOR_ATTR_MAX         20
 #define SENSOR_ATTR_NAME_LENGTH	20
 
 #define SENSOR_GET_CAP_LABEL  0x001
@@ -55,6 +55,7 @@
 #define SENSOR_GET_CAP_MFRID    0x10000
 #define SENSOR_GET_CAP_VIN_TYPE	0x20000
 #define SENSOR_GET_CAP_POUT_MAX	0x40000
+#define SENSOR_GET_CAP_HW_REV   0x80000
 
 #define SDR_SENSOR_TYPE_TEMP  0x01
 #define SDR_SENSOR_TYPE_VOLT  0x02
@@ -1013,6 +1014,7 @@ void ipmi_sdr_set_sensor_factor(uint8_t idx,
           g_sensor_data[idx].capability |= SENSOR_GET_CAP_PSU_PRESENT;
           g_sensor_data[idx].capability |= SENSOR_GET_CAP_VIN_TYPE;
           g_sensor_data[idx].capability |= SENSOR_GET_CAP_POUT_MAX;
+		  g_sensor_data[idx].capability |= SENSOR_GET_CAP_HW_REV;		  
         }
         sprintf(g_sensor_data[idx].attrinfo.attr_type_str, "power");
       }
@@ -1424,6 +1426,13 @@ static ssize_t show_model(struct device *dev, struct device_attribute *devattr,
   return ipmi_get_psu_info(attr->index + DEBUGUSE_SHIFT, 0x9a, buf);
 }
 
+static ssize_t show_hw_rev(struct device *dev, struct device_attribute *devattr,
+                          char *buf)
+{
+  struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
+  return ipmi_get_psu_info(attr->index + DEBUGUSE_SHIFT, 0x9b, buf);
+}
+
 static ssize_t show_sn(struct device *dev, struct device_attribute *devattr,
                        char *buf)
 {
@@ -1559,7 +1568,7 @@ static ssize_t(*const attr_show_func_ptr[SENSOR_ATTR_MAX])(struct device *dev,
   , show_model, show_sn, show_pwm
   , show_controlmode, show_direction, show_fanpresent
   , show_psupresent, show_mfrid, show_vin_type
-  , show_pout_max
+  , show_pout_max, show_hw_rev
 };
 
 static ssize_t(*const attr_store_func_ptr[SENSOR_ATTR_MAX])(struct device *dev,
@@ -1571,7 +1580,7 @@ static ssize_t(*const attr_store_func_ptr[SENSOR_ATTR_MAX])(struct device *dev,
   , NULL, NULL, store_pwm
   , store_controlmode, NULL, NULL
   , NULL, NULL, NULL
-  , NULL
+  , NULL, NULL
 };
 
 static const char *const sensor_attrnames[SENSOR_ATTR_MAX] =
@@ -1582,7 +1591,7 @@ static const char *const sensor_attrnames[SENSOR_ATTR_MAX] =
   , "%s%d_model", "%s%d_sn", "%s%d_pwm"
   , "%s%d_controlmode", "%s%d_direction", "%s%d_present"
   , "%s%d_present", "%s%d_mfrid", "%s%d_vin_type"
-  , "%s%d_pout_max"
+  , "%s%d_pout_max", "%s%d_hw_rev"
 };
 
 static int32_t create_sensor_attrs(int32_t attr_no)
