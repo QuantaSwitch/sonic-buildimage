@@ -92,6 +92,22 @@ class Thermal(ThermalBase):
         else:
             return False
 
+    def get_model(self):
+        """
+        Retrieves the model number (or part number) of the Thermal
+        Returns:
+            string: Model/part number of Thermal
+        """
+        return 'N/A'
+
+    def get_serial(self):
+        """
+        Retrieves the serial number of the Thermal
+        Returns:
+            string: Serial number of Thermal
+        """
+        return 'N/A'
+
     def get_status(self):
         """
         Retrieves the operational status of the device
@@ -152,3 +168,19 @@ class Thermal(ThermalBase):
         else:
             return None
 
+    def get_position_in_parent(self):
+        """
+        Retrieves 1-based relative physical position in parent device.
+        Returns:
+            integer: The 1-based relative physical position in parent
+            device or -1 if cannot determine the position
+        """
+        return self.index
+
+    def is_replaceable(self):
+        """
+        Indicate whether this Thermal is replaceable.
+        Returns:
+            bool: True if it is replaceable.
+        """
+        return False
