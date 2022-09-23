@@ -1560,3 +1560,62 @@ class Sfp(SfpBase):
         name = sfputil_helper.logical[self.index-1] or "Unknown"
         return name
 
+    def get_model(self):
+        """
+        Retrieves the model number (or part number) of the device
+        Returns:
+            string: Model/part number of device
+        """
+        if not self.get_presence():
+           return None
+        return self.get_transceiver_info().get('model')
+
+    def get_serial(self):
+        """
+        Retrieves the serial number of the device
+        Returns:
+            string: Serial number of device
+        """
+        if not self.get_presence():
+           return None
+        return self.get_transceiver_info().get('serial')
+
+    def get_position_in_parent(self):
+        """
+        Retrieves 1-based relative physical position in parent device.
+        Returns:
+            integer: The 1-based relative physical position in parent
+            device or -1 if cannot determine the position
+        """
+        return self.index
+
+    def is_replaceable(self):
+        """
+        Indicate whether this device  is replaceable.
+        Returns:
+            bool: True if it is replaceable.
+        """
+        return True
+
+    def get_error_description(self):
+        """
+        Retrives the error descriptions of the SFP module
+        Returns:
+            String that represents the current error descriptions of vendor specific errors
+            In case there are multiple errors, they should be joined by '|',
+            like: "Bad EEPROM|Unsupported cable"
+        """
+        if not self.get_presence():
+            return self.SFP_STATUS_UNPLUGGED
+        else:
+            eeprom_path = self.port_to_eeprom_mapping[self.port_num]
+            if not os.path.isfile(eeprom_path):
+                return "EEPROM driver is not attached"
+            try:
+                with open(eeprom_path, mode="rb", buffering=0) as eeprom:
+                    eeprom.seek(QSFP_INFO_OFFSET)
+                    eeprom.read(1)
+            except OSError as e:
+                return "EEPROM read failed ({})".format(e.strerror)
+
+        return self.SFP_STATUS_OK
