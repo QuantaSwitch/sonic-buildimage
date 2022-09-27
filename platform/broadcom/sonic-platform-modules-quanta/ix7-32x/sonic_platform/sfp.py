@@ -1556,8 +1556,7 @@ class Sfp(SfpBase):
         """
         sfputil_helper = SfpUtilHelper()
         sfputil_helper.read_porttab_mappings(self.__get_path_to_port_config_file())
-        print("self.index{}".format(self.index))
-        name = sfputil_helper.logical[self.index-1] or "Unknown"
+        name = sfputil_helper.physical_to_logical[self.index][0] or "Unknown"
         return name
 
     def get_model(self):
