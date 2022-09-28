@@ -6,7 +6,7 @@
 #
 
 try:
-    from sonic_eeprom import eeprom_tlvinfo    
+    from sonic_eeprom import eeprom_tlvinfo
 except ImportError as e:
     raise ImportError(str(e) + "- required module not found")
 
@@ -169,6 +169,7 @@ class Eeprom(eeprom_tlvinfo.TlvInfoDecoder):
             if self._TLV_DISPLAY_VENDOR_EXT:
                 for c in t[2:2 + t[1]]:
                     value += "0x%02X " % c
+                value = value.strip() # Remove the trailing space
         elif t[0] == self._TLV_CODE_CRC_32 and len(t) == 6:
             name = "CRC-32"
             value = "0x%08X" % ((t[2] << 24) | (t[3] << 16) | (t[4] << 8) | t[5])
