@@ -1060,16 +1060,17 @@ class Sfp(SfpBase):
         """
         Retrieves the temperature of this SFP
         Returns:
-            An integer number of current temperature in Celsius
+            A float representing the current temperature in Celsius
         """
+        default = 0.0
         if not self.dom_supported:
-            return None
+            return default
         if self.sfp_type == QSFP_TYPE:
             offset = 0
 
             sfpd_obj = sff8436Dom()
             if sfpd_obj is None:
-                return None
+                return default
 
             if self.dom_temp_supported:
                 dom_temperature_raw = self.__read_eeprom_specific_bytes(
@@ -1080,12 +1081,12 @@ class Sfp(SfpBase):
                         dom_temperature_data['data']['Temperature']['value'])
                     return temp
                 else:
-                    return None
+                    return default
         elif self.sfp_type == SFP_TYPE:
             offset = 256
             sfpd_obj = sff8472Dom()
             if sfpd_obj is None:
-                return None
+                return default
             sfpd_obj._calibration_type = 1
 
             dom_temperature_raw = self.__read_eeprom_specific_bytes(
@@ -1096,24 +1097,25 @@ class Sfp(SfpBase):
                     dom_temperature_data['data']['Temperature']['value'])
                 return temp
             else:
-                return None
-        else:
-            return None
+                return default
+
+        return default
 
     def get_voltage(self):
         """
         Retrieves the supply voltage of this SFP
         Returns:
-            An integer number of supply voltage in mV
+            A float representing the supply voltage in mV
         """
+        default = 0.0
         if not self.dom_supported:
-            return None
+            return default
         if self.sfp_type == QSFP_TYPE:
             offset = 0
 
             sfpd_obj = sff8436Dom()
             if sfpd_obj is None:
-                return None
+                return default
 
             if self.dom_volt_supported:
                 dom_voltage_raw = self.__read_eeprom_specific_bytes(
@@ -1124,13 +1126,13 @@ class Sfp(SfpBase):
                         dom_voltage_data['data']['Vcc']['value'])
                     return voltage
                 else:
-                    return None
+                    return default
         elif self.sfp_type == SFP_TYPE:
             offset = 256
 
             sfpd_obj = sff8472Dom()
             if sfpd_obj is None:
-                return None
+                return default
 
             sfpd_obj._calibration_type = self.calibration
 
@@ -1142,25 +1144,25 @@ class Sfp(SfpBase):
                     dom_voltage_data['data']['Vcc']['value'])
                 return voltage
             else:
-                return None
-        else:
-            return None
+                return default
+
+        return default
 
     def get_tx_bias(self):
         """
-        Retrieves the TX bias current of this SFP
+        Retrieves the TX bias current of all SFP channels
         Returns:
-            A list of four integer numbers, representing TX bias in mA
-            for channel 0 to channel 4.
-            Ex. ['110.09', '111.12', '108.21', '112.09']
+            A list of floats, representing TX bias in mA
+            for each available channel
+            E.g., for a tranceiver with four channels: ['110.09', '111.12', '108.21', '112.09']
         """
         tx_bias_list = []
         if self.sfp_type == QSFP_TYPE:
             offset = 0
-
+            default = [0.0] * 4
             sfpd_obj = sff8436Dom()
             if sfpd_obj is None:
-                return None
+                return default
 
             dom_channel_monitor_raw = self.__read_eeprom_specific_bytes(
                 (offset + QSFP_CHANNL_MON_OFFSET), QSFP_CHANNL_MON_WITH_TX_POWER_WIDTH)
@@ -1175,12 +1177,15 @@ class Sfp(SfpBase):
                     dom_channel_monitor_data['data']['TX3Bias']['value']))
                 tx_bias_list.append(self._convert_string_to_num(
                     dom_channel_monitor_data['data']['TX4Bias']['value']))
+            else:
+                return default
+
         elif self.sfp_type == SFP_TYPE:
             offset = 256
-
+            default = [0.0]
             sfpd_obj = sff8472Dom()
             if sfpd_obj is None:
-                return None
+                return default
             sfpd_obj._calibration_type = self.calibration
 
             if self.dom_supported:
@@ -1192,30 +1197,28 @@ class Sfp(SfpBase):
                     tx_bias_list.append(self._convert_string_to_num(
                         dom_channel_monitor_data['data']['TXBias']['value']))
                 else:
-                    return None
+                    return default
             else:
-                return None
-        else:
-            return None
+                return default
 
         return tx_bias_list
 
     def get_rx_power(self):
         """
-        Retrieves the received optical power for this SFP
+        Retrieves the TX bias current of all SFP channels
         Returns:
-            A list of four integer numbers, representing received optical
-            power in mW for channel 0 to channel 4.
-            Ex. ['1.77', '1.71', '1.68', '1.70']
+            A list of floats, representing TX bias in mA
+            for each available channel
+            E.g., for a tranceiver with four channels: ['110.09', '111.12', '108.21', '112.09']
         """
         rx_power_list = []
 
         if self.sfp_type == QSFP_TYPE:
             offset = 0
-
+            default = [0.0] * 4
             sfpd_obj = sff8436Dom()
             if sfpd_obj is None:
-                return None
+                return default
 
             if self.dom_rx_power_supported:
                 dom_channel_monitor_raw = self.__read_eeprom_specific_bytes(
@@ -1232,15 +1235,15 @@ class Sfp(SfpBase):
                     rx_power_list.append(self._convert_string_to_num(
                         dom_channel_monitor_data['data']['RX4Power']['value']))
                 else:
-                    return None
+                    return default
             else:
-                return None
+                return default
         elif self.sfp_type == SFP_TYPE:
             offset = 256
-
+            default = [0.0]
             sfpd_obj = sff8472Dom()
             if sfpd_obj is None:
-                return None
+                return default
 
             if self.dom_supported:
                 sfpd_obj._calibration_type = self.calibration
@@ -1253,30 +1256,29 @@ class Sfp(SfpBase):
                     rx_power_list.append(self._convert_string_to_num(
                         dom_channel_monitor_data['data']['RXPower']['value']))
                 else:
-                    return None
+                    return default
             else:
-                return None
-        else:
-            return None
+                return default
 
         return rx_power_list
 
     def get_tx_power(self):
         """
-        Retrieves the TX power of this SFP
+        Retrieves the TX power of all SFP channels
         Returns:
-            A list of four integer numbers, representing TX power in mW
-            for channel 0 to channel 4.
-            Ex. ['1.86', '1.86', '1.86', '1.86']
+            A list of floats, representing TX power in mW
+            for each available channel
+            E.g., for a tranceiver with four channels: ['1.86', '1.86', '1.86', '1.86']
         """
         tx_power_list = []
 
         if self.sfp_type == QSFP_TYPE:
             offset = 0
+            default = [0.0] * 4
 
             sfpd_obj = sff8436Dom()
             if sfpd_obj is None:
-                return None
+                return default
 
             if self.dom_tx_power_supported:
                 dom_channel_monitor_raw = self.__read_eeprom_specific_bytes(
@@ -1293,14 +1295,15 @@ class Sfp(SfpBase):
                     tx_power_list.append(self._convert_string_to_num(
                         dom_channel_monitor_data['data']['TX4Power']['value']))
                 else:
-                    return None
+                    return default
             else:
-                return None
+                return default
         elif self.sfp_type == SFP_TYPE:
             offset = 256
+            default = [0.0]
             sfpd_obj = sff8472Dom()
             if sfpd_obj is None:
-                return None
+                return default
 
             if self.dom_supported:
                 sfpd_obj._calibration_type = self.calibration
@@ -1313,11 +1316,9 @@ class Sfp(SfpBase):
                     tx_power_list.append(self._convert_string_to_num(
                         dom_channel_monitor_data['data']['TXPower']['value']))
                 else:
-                    return None
+                    return default
             else:
-                return None
-        else:
-            return None
+                return default
 
         return tx_power_list
 
