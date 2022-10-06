@@ -432,4 +432,20 @@ serdes_core_tx_polarity_flip_physical{217}=0x5a
 phy_chain_rx_lane_map_physical{217.0}=0x67541203
 serdes_core_rx_polarity_flip_physical{217}=0x33
 
-
+#Set 200G FEC as rs544_2xN because SONiC port_config.ini rs set it as rs544_1xN
+port_fec_9=9
+port_fec_11=9
+port_fec_60=9
+port_fec_62=9
+port_fec_5=9
+port_fec_7=9
+port_fec_24=9
+port_fec_26=9
+port_fec_68=9
+port_fec_70=9
+port_fec_64=9
+port_fec_66=9
+port_fec_72=9
+port_fec_74=9
+port_fec_1=9
+port_fec_3=9
