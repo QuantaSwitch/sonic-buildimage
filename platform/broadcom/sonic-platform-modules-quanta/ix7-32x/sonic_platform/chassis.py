@@ -221,7 +221,9 @@ class Chassis(ChassisBase):
             is "REBOOT_CAUSE_HARDWARE_OTHER", the second string can be used
             to pass a description of the reboot cause.
         """
-        return (ChassisBase.REBOOT_CAUSE_HARDWARE_OTHER, "Invalid Reason")
+        return (ChassisBase.REBOOT_CAUSE_NON_HARDWARE, None)
+        #TODO: Add Hardware and watchdog reboot cause
+        #return (ChassisBase.REBOOT_CAUSE_HARDWARE_OTHER, "Invalid Reason")
 
     ##############################################
     # Other methods
