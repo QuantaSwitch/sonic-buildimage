@@ -16,6 +16,7 @@ try:
     from sonic_platform.fan import Fan
     from sonic_platform.fan_drawer import FanDrawer
     from sonic_platform.thermal import Thermal
+    from sonic_platform.hwrebootcause import HWRebootCause
 
 except ImportError as e:
     raise ImportError(str(e) + "- required module not found")
@@ -78,6 +79,8 @@ class Chassis(ChassisBase):
         self._component_list.append(ComponentBMC())
         self._component_list.extend(ComponentCPLD.get_component_list())
         self._component_list.append(ComponentPCIE())
+
+        self.hw_reboot_cause = HWRebootCause()
 
 ##############################################
 # Device methods
@@ -221,9 +224,10 @@ class Chassis(ChassisBase):
             is "REBOOT_CAUSE_HARDWARE_OTHER", the second string can be used
             to pass a description of the reboot cause.
         """
-        return (ChassisBase.REBOOT_CAUSE_NON_HARDWARE, None)
-        #TODO: Add Hardware and watchdog reboot cause
-        #return (ChassisBase.REBOOT_CAUSE_HARDWARE_OTHER, "Invalid Reason")
+        if self.hw_reboot_cause.check_power_loss():
+            return (ChassisBase.REBOOT_CAUSE_POWER_LOSS, None)
+        else:
+            return (ChassisBase.REBOOT_CAUSE_NON_HARDWARE, None)
 
     ##############################################
     # Other methods
