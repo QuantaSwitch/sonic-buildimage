@@ -89,7 +89,7 @@ class HWRebootCause(object):
         order_diff = sys_restart_order - ac_lost_order
         power_off_time_diff = power_off_deasserted_time - sys_restart_time
 
-        if order_diff == 1 or (power_off_time_diff.total_seconds() > -5 and power_off_time_diff.total_seconds() < 12):
+        if order_diff == 1 or (power_off_time_diff.total_seconds() > -5 and power_off_time_diff.total_seconds() < 15):
             with open(POWER_LOSS_GPIO_VALUE, 'w') as f:
                 f.write('1\n')
             return True
